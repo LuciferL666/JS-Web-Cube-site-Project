@@ -1,22 +1,19 @@
 // SETUP basic server
 const express = require('express');
-const handlebars = require('express-handlebars');
-const path = require('path')
+
+const expressConfig = require('./configurations/expressConfig'); // To call the express Configurations
+const handlebarsConfig = require('./configurations/handlebarsConfig'); // To call the handlebarse configurations
 
 const app = express() //instance of the express server
 
 const PORT = 5000 // Making a constant for the port which server is running to
 
 // Express configuration
-app.use(express.static(path.resolve(__dirname, 'public'))); // to be able to use static files from public Need to setup Path module
-//app.use(express.static('src/public')); // Or we can use basic way
+//require('./configurations/expressConfig')(app); // Other old way To call the express Configurations
+expressConfig(app); // To call the express Configurations
 
 //Handlebars configurations
-app.engine('hbs', handlebars.engine({
-    extname: 'hbs',  //Make it easier to be used 
-}));
-app.set('view engine', 'hbs');
-app.set('views', 'src/views'); // To set the directory views because it will look for it in the main folder 
+handlebarsConfig(app); // To call the handlebarse configurations
 
 //Router
 app.get('/', (req, res) =>{ //First end point with first handler

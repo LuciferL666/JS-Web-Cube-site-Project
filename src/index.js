@@ -9,6 +9,7 @@ const PORT = 5000 // Making a constant for the port which server is running to
 
 // Express configuration
 app.use(express.static(path.resolve(__dirname, 'public'))); // to be able to use static files from public Need to setup Path module
+//app.use(express.static('src/public')); // Or we can use basic way
 
 //Handlebars configurations
 app.engine('hbs', handlebars.engine({

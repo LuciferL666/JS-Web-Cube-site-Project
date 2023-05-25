@@ -3,6 +3,7 @@ const express = require('express');
 
 const expressConfig = require('./configurations/expressConfig'); // To call the express Configurations
 const handlebarsConfig = require('./configurations/handlebarsConfig'); // To call the handlebarse configurations
+const homeController = require('./controllers/homeController'); //Router
 
 const app = express() //instance of the express server
 
@@ -16,8 +17,7 @@ expressConfig(app); // To call the express Configurations
 handlebarsConfig(app); // To call the handlebarse configurations
 
 //Router
-app.get('/', (req, res) =>{ //First end point with first handler
-res.render('index')
-});
+//app.get('/', homeController.getHome); // Not very good way 
+app.use(homeController)
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}...`)); // And massage to be sure that server is running without any problems

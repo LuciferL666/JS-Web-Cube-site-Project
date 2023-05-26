@@ -4,6 +4,8 @@ const cubes = [];
 
 exports.getAll = () => cubes.slice();
 
+exports.getOne = (cubeId) => cubes.find(c => c.id == cubeId) // To take details of the cube 
+
 exports.create = (cubeData) => {
   const newCube = {
     //id: (new Date()).getTime(), // We can take Id to date

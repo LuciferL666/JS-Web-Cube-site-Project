@@ -1,5 +1,5 @@
     <main>
-    {{#with cube}}
+    {{#with cube}} {{! If we do not use with, we need to say cube.name, cube.imageUrl ect}}
       <h1>{{name}}</h1>
       <img class="cube" src="{{imageUrl}}">
       <div class="{{details}}">

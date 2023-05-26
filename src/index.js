@@ -24,4 +24,10 @@ app.use(homeController);
 //create page
 app.use('/cubes', cubeController);
 
+//For page 404
+app.get('*', (req, res) =>{
+    res.redirect('/404');
+})
+
+
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}...`)); // And massage to be sure that server is running without any problems

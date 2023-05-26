@@ -3,8 +3,7 @@ const express = require('express');
 
 const expressConfig = require('./configurations/expressConfig'); // To call the express Configurations
 const handlebarsConfig = require('./configurations/handlebarsConfig'); // To call the handlebarse configurations
-const homeController = require('./controllers/homeController'); //Router
-const cubeController = require('./controllers/cubeController'); // Create page
+const routes = require('./routes')
 
 const app = express(); //instance of the express server
 
@@ -17,17 +16,6 @@ expressConfig(app); // To call the express Configurations
 //Handlebars configurations
 handlebarsConfig(app); // To call the handlebarse configurations
 
-//Router
-//app.get('/', homeController.getHome); // Not very good way 
-app.use(homeController);
-
-//create page
-app.use('/cubes', cubeController);
-
-//For page 404
-app.get('*', (req, res) =>{
-    res.redirect('/404');
-})
-
+app.use(routes)
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}...`)); // And massage to be sure that server is running without any problems

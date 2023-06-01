@@ -8,3 +8,5 @@ difficultyLevel: Number,
 });
 
 const Cube = mongoose.model('Cube', cubeSchema);
+
+module.exports = Cube;

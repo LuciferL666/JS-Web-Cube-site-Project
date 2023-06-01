@@ -8,14 +8,14 @@ console.log(cubeManager.getAll());
     res.render('create');
 });
 
-router.post('/create', (req, res) =>{ // accepte create data
+router.post('/create', async (req, res) =>{ // accepte create data
 const { name,
      description,
      imageUrl,
      difficultyLevel
     } = req.body;
 
-cubeManager.create({ 
+await cubeManager.create({ 
     name,
     description,
     imageUrl,
@@ -33,7 +33,7 @@ cubeManager.create({
 cubeManager.create(data)
 */
 res.redirect('/');
-})
+});
 
 //setup details of specific cube
 router.get('/:cubeId/details', (req, res) =>{

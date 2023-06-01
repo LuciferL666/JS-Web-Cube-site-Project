@@ -1,3 +1,5 @@
+const Cube = require('../models/Cube')
+
 //file for creating cube
 const uniqid = require("uniqid"); // Generate uniq Id but it's necessary to install "npm i uniqid"
 const cubes = [
@@ -37,15 +39,20 @@ result = result.filter(cube => cube.difficultyLevel <= Number(to));
 
 exports.getOne = (cubeId) => cubes.find(c => c.id == cubeId) // To take details of the cube 
 
-exports.create = (cubeData) => {
-  const newCube = {
-    //id: (new Date()).getTime(), // We can take Id to date
-    //id: cubes.length + 1,
-    id: uniqid(), // Generate uniq Id but it's necessary to install "npm i uniqid"
-    ...cubeData,
-  };
+exports.create = async (cubeData) => {
+const cube = new Cube(cubeData);
 
-  cubes.push(newCube);
+await cube.save();
 
-  return newCube;
+
+  // const newCube = {
+  //   //id: (new Date()).getTime(), // We can take Id to date
+  //   //id: cubes.length + 1,
+  //   id: uniqid(), // Generate uniq Id but it's necessary to install "npm i uniqid"
+  //   ...cubeData,
+  // };
+
+  //cubes.push(newCube);
+
+  return cube;
 };

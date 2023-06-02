@@ -2,10 +2,10 @@
 const router = require('express').Router();
 const cubeManager = require('../managers/cubeManager')
 
-router.get('/', (req, res) => { //First end point with first handler
+router.get('/', async (req, res) => { //First end point with first handler
 const { search, from, to } = req.query
 
-    const cubes = cubeManager.getAll(search, from, to)
+    const cubes = await cubeManager.getAll(search, from, to)
 
     res.render('index', { cubes, search, from, to })
 });

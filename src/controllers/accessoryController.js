@@ -17,3 +17,4 @@ await accessoryManager.create({ name, description, imageUrl })
 })
 
 module.exports = router;
+

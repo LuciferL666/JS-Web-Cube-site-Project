@@ -24,20 +24,19 @@ result = result.filter(cube => cube.difficultyLevel <= Number(to));
 
 exports.getOne = (cubeId) => Cube.findById(cubeId) // To take details of the cube 
 
-exports.create = async (cubeData) => {
+exports.create = (cubeData) => {
 const cube = new Cube(cubeData);
 
-await cube.save();
+return cube.save();
 
-
-  // const newCube = {
-  //   //id: (new Date()).getTime(), // We can take Id to date
-  //   //id: cubes.length + 1,
-  //   id: uniqid(), // Generate uniq Id but it's necessary to install "npm i uniqid"
-  //   ...cubeData,
-  // };
-
-  //cubes.push(newCube);
-
-  return cube;
 };
+
+
+exports.attachAccessory = async (cubeId, accessoryId) =>{
+ return Cube.findByIdAndUpdate(cubeId, { $push: { accessories: accessoryId } }); // first way 
+//   const cube = await Cube.findById(cubeId);//second
+//   cube.accessories.push(accessoryId);//second
+
+// return cube.save();//second
+ };
+

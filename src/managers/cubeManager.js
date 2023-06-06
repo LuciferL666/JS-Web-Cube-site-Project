@@ -23,6 +23,7 @@ result = result.filter(cube => cube.difficultyLevel <= Number(to));
 }
 
 exports.getOne = (cubeId) => Cube.findById(cubeId) // To take details of the cube 
+exports.getOneWithAccessories = (cubeId) => this.getOne(cubeId).populate('accessories')
 
 exports.create = (cubeData) => {
 const cube = new Cube(cubeData);

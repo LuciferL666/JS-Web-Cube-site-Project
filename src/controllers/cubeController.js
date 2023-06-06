@@ -29,12 +29,12 @@ res.redirect('/');
 //setup details of specific cube
 router.get('/:cubeId/details', async (req, res) =>{
     const cube = await cubeManager.getOne(req.params.cubeId).lean();
-    const accessories = await accessoryManager.getAll().lean()
+    
     if(!cube){
         return res.redirect('/404')
     }
     
-    res.render('details', { cube, accessories });
+    res.render('details', { cube });
 });
 
 router.get('/:cubeId/attach-accessory', async (req, res) =>{

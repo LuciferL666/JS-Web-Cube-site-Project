@@ -315,7 +315,45 @@ app.listen(PORT, () => console.log(`Server is running on port ${PORT}...`)); // 
  });
 const Cube = mongoose.model('cube', cubeSchema); //базов модел който може да използваме
 
+module.exports = Cube;
+
 ако няма грешка КОМИТВАМЕ 'Add base cube model'
+
+ОСЕМНАДЕСЕТО ЗАПОЧВАНЕ НА РАБОТА С КУБОВЕ СЪЗДАДЕНИ В БАЗАТА ДАННИ:
+В ФАЙЛ cubeManager.js
+най-отгоре импортваме куба const Cube = require('../models/Cube');
+след това във exports.create = (cubeData) =>{
+    }
+    // изтриваме newCube id: и ...cubeData тоест всичко изтриваме под exports.create и я правим асинхронна
+    тоест ето така:
+    exports.create = async (cubeData) =>{
+        const cube = new Cube(cubeData);
+
+        await cube.save();
+
+        return cube;
+    }
+    след това влизаме във cubeController.js и create го правим асинхронен на 
+    router.post('/create', async (req, res) =>{ 
+const { name,
+     description,
+     imageUrl,
+     difficultyLevel
+    } = req.body;
+
+ await cubeManager.create({ 
+    name,
+    description,
+    imageUrl,
+    difficultyLevel: Number(difficultyLevel),
+   });
+   res.redirect('/')
+}) // ПО ТОЗИ НАЧИН
+СЛЕД ТОВА ИЗПРОБВАМЕ ДА СЪЗДАДЕМ НОВ КУБ НЯМА ДА СЕ ВИЗУАЛИЗИРА НА СТРАНИЦАТА,
+ НО ТРЯБВА ДА ГО ИМА В БАЗАТА ДАННИ АКО ГО ИМА ЗНАЧИ ВСИЧКО Е НАРЕД И КОМИТВАМ 'Add cube to DB'
+
+
+
 
 req.query = за куери стринга това е всичко след ? във http и ако има фрагмент "=" преди фрагмента
 req.params = за параметрите

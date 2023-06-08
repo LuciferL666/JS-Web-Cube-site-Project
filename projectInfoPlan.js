@@ -352,7 +352,34 @@ const { name,
 СЛЕД ТОВА ИЗПРОБВАМЕ ДА СЪЗДАДЕМ НОВ КУБ НЯМА ДА СЕ ВИЗУАЛИЗИРА НА СТРАНИЦАТА,
  НО ТРЯБВА ДА ГО ИМА В БАЗАТА ДАННИ АКО ГО ИМА ЗНАЧИ ВСИЧКО Е НАРЕД И КОМИТВАМ 'Add cube to DB'
 
+ ДЕВЕТНАДЕСЕТО ВИЗУАЛИЗИРАНЕ НА КУБОВЕ ОТ БАЗАТА ДАННИ:
+ влизаме във файл cubeManager.js и при exports.getOne = (cubeId) го заместваме
+ exports.getOne = (cubeId) => Cube.findById(cubeId); в тази функция няма смисъл да се awaitva, но
+ след това влизаме в cubeController.js  и при router.get(':/cubeId/details', async (req, res)) поднего 
+ където е const cube пишем await тоест 
+ const cube = await cubeManager.getOne просто добавяме await 
+ в файл index.js при dbConnect в catch вместо err пишем err.message
+навярно сървъра ще гръмне за това отиваме в cubeManager.js и където е exports.getOne най накрая след (cubeId) слагаме .lean()
+но най-доброто място да поставим този 'lean' е в файл cubeController.js ето така router.get('/:cubeId/details', async (req, res) =>{
+    const cube = await cubeManager.getOneWithAccessories(req.params.cubeId).lean(); тук само се добавя .lean 
+И НАКРАЯ ВЪВ ФАЙЛ cubeManager.js при exports.getAll
+след него където се намира let result = вместо cubes.slice() пишем Cube.find(); но трябва да се await-не и тоест става:
+exports.getAll = async (search, from, to) => {
+  let result = await Cube.find().lean();
 
+  и изтриваме вградените кубове тоест в cubeManager.js трием от:
+  const uniqid  до exports.getAll тоест всичко във const uniqid включително и const uniqid
+
+  И накрая в homeController.js при router.get('/') трябва да сложим async  и в const cube под него трябва да сложим await тоест ето така:
+  router.get('/', async (req, res) => { //First end point with first handler
+const { search, from, to } = req.query
+
+    const cubes = await cubeManager.getAll(search, from, to) // да проуча как работи .lean()
+
+    res.render('index', { cubes, search, from, to })
+});
+
+АКО ВСИЧКО СЕ ВИЗУАЛИЗИРА И НЯМА ГРЕШКИ В СЪРВЪРА КОМИТВАМ 'Get cubes fromdb'
 
 
 req.query = за куери стринга това е всичко след ? във http и ако има фрагмент "=" преди фрагмента

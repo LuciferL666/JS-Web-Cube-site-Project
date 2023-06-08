@@ -294,12 +294,28 @@ app.listen(PORT, () => console.log(`Server is running on port ${PORT}...`)); // 
  .catch(err => {
     console.log('DB error: ', err);
  });
- НО ако базата данни не е толкова важна тогава просто 
+ НО ако базата данни не е толкова важна тогава просто под handlebarsConfig(app) пишем:
  dbConnect()
  .then(() => console.log('DB Connected successfully)); // това е просто да ни извести когато базата данни се е свързала 
  .catch(err =>  console.log('DB error: ', err));
 
  ако сървъра се стартира без грешка КОМИТВАМ 'Setup mongoose'
+
+ СЕДЕМНАДЕСЕТО ПАПКА ЗА МОДЕЛИТЕ:
+
+ В SRC папка правим папка models конвенцията е името на ресурса винаги с главна буква правим файл Cube.js
+ в него взимаме mongoose
+ const mongoose = require('mongoose')
+ и създаваме схема:
+ const cubeSchema = new mongoose.Schema({ и в нея се описва какво има в Data-та
+    name: String,
+    description: String,
+    imageUrl: String,
+    difficultyLevel: Number,  // изброяваме отделните пропъртита 
+ });
+const Cube = mongoose.model('cube', cubeSchema); //базов модел който може да използваме
+
+ако няма грешка КОМИТВАМЕ 'Add base cube model'
 
 req.query = за куери стринга това е всичко след ? във http и ако има фрагмент "=" преди фрагмента
 req.params = за параметрите

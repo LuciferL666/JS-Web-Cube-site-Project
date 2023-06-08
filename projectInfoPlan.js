@@ -263,7 +263,43 @@ if(to){
   под хандлебарсКонфиг(апп)
   слагам app.use(routes)
 
-  ако всичко работи Комитвам 'EXTRACT ROUTES'
+  ако всичко работи КОМИТВАМ 'EXTRACT ROUTES'
+
+  ATTACHMENTS DATABASE 
+
+ШЕСНАДЕСЕТО ИНСТАЛИРАНЕ НА БИБЛИОТЕКИ ЗА БАЗА ДАННИ 
+npm i mongoose
+достъпваме библиотеката : index.js влизаме и пишем под експреса const mongoose = require('mongoose') и В папка конфиг правим файл dbConfig.js
+ в него правим const mongoose = require('mongoose')
+правим променлива за Uri: const uri = 'mongodb://localhost:27017/cubicle-may-2023'
+ и  асинхронна функция async function dbConnect(){
+    await mongoose.connect(uri)
+ }
+ module.exports = dbConnect
+
+ след като сме направили функцията влизаме обратно в index.js и изтриваме const mongoose = require('mongoose') 
+ вместо него над const routes пиша const dbConnect = require(./configurations/dbConfig)  
+ и я извикваме над expressConfig(app) просто пишем dbConnect();
+
+ ако базата данни ни е изключително важна и искаме приложението да не работи ако няма база данни първо трябва да се кънектне
+ към базата данни чак след това да сетъпне всичко останало и се прави така 
+ dbConnect()
+ .then(() =>{
+    expressConfig(app);
+    handlebarsConfig(app);
+
+    app.use(routes);
+app.listen(PORT, () => console.log(`Server is running on port ${PORT}...`)); // така всичко ще тръгне чак след като се зареди базата данни 
+ })
+ .catch(err => {
+    console.log('DB error: ', err);
+ });
+ НО ако базата данни не е толкова важна тогава просто 
+ dbConnect()
+ .then(() => console.log('DB Connected successfully)); // това е просто да ни извести когато базата данни се е свързала 
+ .catch(err =>  console.log('DB error: ', err));
+
+ ако сървъра се стартира без грешка КОМИТВАМ 'Setup mongoose'
 
 req.query = за куери стринга това е всичко след ? във http и ако има фрагмент "=" преди фрагмента
 req.params = за параметрите

@@ -453,6 +453,23 @@ await accessoryManager.create({ name, description, imageUrl })
 след това си правим аксесоар рефрешваме базата данни и проверяваме дали се е запазило
 ако всичко е наред КОМИТВАМ 'ADD ACCESSORY TO DB'
 
+ДВАДЕСЕТ И ПЕТ:
+ във файл cube.Controller.js преди module.exports = router
+
+ правя нов раутер:
+ router.get('/:cubeId/attach-accessory', (req, res)=>{
+res.render('accessory/attach);
+ })
+за да оправим страницата за attach влизаме във папка view файл attachAccessory ако е html го правим на HBS
+след това изтриваме всичко в нея освен това което е в main останалото вече го имаме запаметено
+трябва да влезем във cube.hbs  и при клас бутона трябва {{id}} да го направим на {{_id}} 
+ето така: <a class="btn" href="/cubes/{{_id}}/details">Details</a>
+
+МНОГО ВАЖНО!! ВЛИЗАМ В ФАЙЛ updateDetailsPage.html и копирам новата секция която е 
+accessories която започва от <h2>Accessories</h2> и копирам от там до </div> точно преди </main>
+и го поставям във details.hbs точно под </div> и след това updateDetailsPage.html може директно да се изтрие вече не е нужна
+ако се появят хардкорднати attach значи всичко работи и КОМИТВАМ
+'fix id to broken details page' , 'add dummy accessories to details page', 'add attach' по отделно 
 
 req.query = за куери стринга това е всичко след ? във http и ако има фрагмент "=" преди фрагмента
 req.params = за параметрите

@@ -405,6 +405,18 @@ const accessoryController = require('./controllers/accessoryController);
 СЛЕД ТОВА ПРОВЕРЯВАМЕ ДАЛИ РАБОТИ ВЛИЗАМЕ В САЙТА И НАТИСКАМЕ НА ADD ACCESSORY АКО ЗАРЕДИ
 ВСИЧКО Е ГОТОВО И КОМИТВАМ 'ADD ACCESSORY PAGE'
 
+ДВАДЕСЕТ И ЕДНО
+ВЛИЗАМЕ В ФАЙЛ create.hbs при action ако искаме на същата страница да се постнат няма нужда от акшън
+но е хубаво да се постави "/accessories/create"  и метода е POST 
+ЗА ДА ГО ДОСТЪПИМ ОБАЧЕ ТРЯБВА ДА ГО СВЪРЖЕМ ВЪВ ФАЙЛ accessoryController 
+под router.get правим нов 
+router.post('/create', (req, res) => {
+    const body = req.body; // Това body ни дава име описание и картинка
+
+    res.redirect('/') //Да ни отведе на главната страница
+}) 
+ако ни върне на главната страница и сървъра не гърми КОМИТВАМ 'Add post action action for create accessory'
+
 req.query = за куери стринга това е всичко след ? във http и ако има фрагмент "=" преди фрагмента
 req.params = за параметрите
 req.body = за пост данните на формата които са изпратени и са парснати

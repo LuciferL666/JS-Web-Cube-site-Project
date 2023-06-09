@@ -417,6 +417,21 @@ router.post('/create', (req, res) => {
 }) 
 ако ни върне на главната страница и сървъра не гърми КОМИТВАМ 'Add post action action for create accessory'
 
+ДВАДЕСЕТ И ДВЕ:
+във папка managers създаваме файл accessoryManager.js
+след това отиваме във папка models и създаваме модел Accessory.js
+в него както в Cube.js пак си правим схема тоест информация за базата данни която да се запазва:
+const mongoose = require('mongoose');
+const accessory = new mongoose.Schema({
+    name: String,
+    description: String,
+    imageUrl: String,
+})
+const Accessory = mongoose.model('Accessory', accessorySchema);
+module.exports = Accessory;
+след това КОМИТВАМ 'Add accessory model'
+
+
 req.query = за куери стринга това е всичко след ? във http и ако има фрагмент "=" преди фрагмента
 req.params = за параметрите
 req.body = за пост данните на формата които са изпратени и са парснати

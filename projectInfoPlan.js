@@ -381,6 +381,29 @@ const { search, from, to } = req.query
 
 АКО ВСИЧКО СЕ ВИЗУАЛИЗИРА И НЯМА ГРЕШКИ В СЪРВЪРА КОМИТВАМ 'Get cubes fromdb'
 
+ДВАДЕСЕТО СЪЗДАВАНЕ НА АКСЕСОАР:
+НАЙ-НАПРЕД ВЗИМАМЕ НОВИТЕ РЕСУРСИ КАТО CSS И HTML OR HBS 
+И ГИ ПОСТАВЯМЕ CSS AND IMAGES В ПАПКА PUBLIC А ДРУГИТЕ РЕСУСРСИ ТОЕСТ HTML OR HBS ГИ ПОСТАВЯМЕ В ПАПКА VIEWS
+Създаваме папка във views accessory и в нея поставяме attachAccessory и createAccessory и преименуваме само на create
+ако има нов линк като наприме 'Add accessory' го копираме и го поставяме в main.hbs при останалите линкове между "/cubes/create" и "/about"
+след това трием всичко освен main във папка accessory, file create.hbs 
+линка за accessory create трябва да бъде "/accessories/create"
+
+за да се появи страницата трябва да се направи нов контролер в папка controllers правим файл accessoryController.js
+
+const router = require('express').Router()
+router.get('/create', (req, res)=>{
+    res.render('accessory/create);
+})
+module.exports = router
+
+и това нещо трябва да се върже към сървъра
+влизаме във file routes.js и добавяме нов контролер
+const accessoryController = require('./controllers/accessoryController);
+и под router.use('/cubes')
+правя router.use('/accessories', accessoryController) това е за всички пътища които започват със /accessories
+СЛЕД ТОВА ПРОВЕРЯВАМЕ ДАЛИ РАБОТИ ВЛИЗАМЕ В САЙТА И НАТИСКАМЕ НА ADD ACCESSORY АКО ЗАРЕДИ
+ВСИЧКО Е ГОТОВО И КОМИТВАМ 'ADD ACCESSORY PAGE'
 
 req.query = за куери стринга това е всичко след ? във http и ако има фрагмент "=" преди фрагмента
 req.params = за параметрите

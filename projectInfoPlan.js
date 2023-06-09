@@ -431,6 +431,14 @@ const Accessory = mongoose.model('Accessory', accessorySchema);
 module.exports = Accessory;
 след това КОМИТВАМ 'Add accessory model'
 
+ДВАДЕСЕТ И ТРИ:
+ВЛИЗАМ В ФАЙЛ accessoryManager.js и пиша следното
+const Accessory = require('../models/Accessory')'
+
+exports.create = (accessoryData) => Accessory.create(accessoryData);
+
+КОМИТВАМ 'ADD ACCESSORY MANAGER'
+
 
 req.query = за куери стринга това е всичко след ? във http и ако има фрагмент "=" преди фрагмента
 req.params = за параметрите

@@ -439,6 +439,20 @@ exports.create = (accessoryData) => Accessory.create(accessoryData);
 
 КОМИТВАМ 'ADD ACCESSORY MANAGER'
 
+ДВАДЕСЕТ И ЧЕТИРИ:
+ВЛИЗАМ ВЪВ ФАЙЛ accessoryController.js
+и под експрес раутера пиша
+const accessoryManager = require('../managers/accessoryManager');
+и променяме router.post по този начин:
+router.post('/create', async (req, res) =>{
+    const { name, description, imageUrl } = req.body;
+    //TODO: ADD accessory data to db
+await accessoryManager.create({ name, description, imageUrl })
+    res.redirect('/')
+})
+след това си правим аксесоар рефрешваме базата данни и проверяваме дали се е запазило
+ако всичко е наред КОМИТВАМ 'ADD ACCESSORY TO DB'
+
 
 req.query = за куери стринга това е всичко след ? във http и ако има фрагмент "=" преди фрагмента
 req.params = за параметрите

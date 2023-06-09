@@ -476,6 +476,40 @@ accessories която започва от <h2>Accessories</h2> и копира�
  <a class="btn" href="/cubes/{{_id}}/attach-accessory">Attach</a>
  след като го натисна ако работи и ме отрави в хардкордната страница КОМИТВАМ 'ADD ATTACH ACCESSORY LINK'
 
+ ДВАДЕСЕТ И СЕДЕМ:
+ВЛИЗАМЕ ВЪВ ФАЙЛ attach.hbs и под клас = форм където е <h2>Rubik cube</h2>
+го променяме там трябва да е името <h2>{{cube.name}}</h2>
+след това променяме линка за картинката в src на src="{{cube.imageUrl}}"
+след това може да се възползваме от дефолтния action и директно да го махнем така във form ]e stane taka:
+ <form method="POST">
+след това влизаме във cubeController.js и променяме router.get('/:cubeId/attach-accessory')
+по следния начин:
+router.get('/:cubeId/attach-accessory', async (req, res) =>{
+    const cube = await cubeManager.getOne(req.params.cubeId).lean()
+    res.render('accessory/attach', { cube });
+})
+след това влизаме във attach a new accessory и ако се покаже нашия куб ЗНАЧИ ВСИЧКО РАБОТИ
+после влизаме в cubeManager.js и под const cubeManager правя:
+const accessoryManager = require('../managers/accessoryManager) 
+
+след това под router.get('/:cubeId/attach-accessory', async (req, res) =>{
+    const cube = await cubeManager.getOne(req.params.cubeId).lean()
+    пиша const accessories = await accessoryManager.get().lean()
+
+    след това в accessoryManager между const Accessory и exports.create 
+    пиша exports.getAll = () => Accessory.find()
+    и след това в cubeController.js при router.get('/:cubeId/attach-accessory', async (req, res) =>{ отдоло в  res.render('accessory/attach', { cube
+след cube добавяме accessory и става така:  res.render('accessory/attach', { cube, accessories }) 
+
+след това в attach.hbs под <options value="Accessory" 1,2,3,4,5, и тн. под тях правя 
+{{#each accessories}}
+<option value="{{_id}}">{{name}}</option>
+{{/each}}
+и след това изтривам всичките останали option със Accessory 1,2,3,4,5 и тн. ги махам без select id="accessory" name="accessory"
+
+след това проверявам при закачването на аксесоар в сайта дали всичко работи правя нов аксесоар и проверявам дали го има в падащото меню
+ ако всичко е наред КОМИТВАМ 'SHOW CUBE AND ACCESSORIES ON ATTACH PAGE'
+
 req.query = за куери стринга това е всичко след ? във http и ако има фрагмент "=" преди фрагмента
 req.params = за параметрите
 req.body = за пост данните на формата които са изпратени и са парснати

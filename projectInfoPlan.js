@@ -510,6 +510,18 @@ const accessoryManager = require('../managers/accessoryManager)
 след това проверявам при закачването на аксесоар в сайта дали всичко работи правя нов аксесоар и проверявам дали го има в падащото меню
  ако всичко е наред КОМИТВАМ 'SHOW CUBE AND ACCESSORIES ON ATTACH PAGE'
 
+ДВАДЕСЕТ И ОСЕМ:
+ПРЕМАХВАНЕ НА НАТПИСА ЗА АКСЕСОАРИТЕ КОГАТО НЕ НИ ТРЯБВА
+ВЛИЗАМЕ В ФАЙЛ cubeController.js и при router.get за attach-accessory
+след const accessories пишем:
+const hasAccessories = accessories.length > 0 
+
+и в res.render след cube, accessories подаваме и hasAccessories
+след това във файл attach.hbs над form method и под src="{{cube.imageUrl}}"
+правим {{#if hasAccessories}} и под {{/form}} пишем {{else}} и след <h3 надписа за кубовете</h3> {{/if}}
+ако всичко е наред КОМИТВАМ "Show no accessory"
+
+
 req.query = за куери стринга това е всичко след ? във http и ако има фрагмент "=" преди фрагмента
 req.params = за параметрите
 req.body = за пост данните на формата които са изпратени и са парснати

@@ -552,6 +552,42 @@ exports.attachAccessory = async (cubeId, accessoryId) =>{
 след това добавяме аксесоар на куба и гледаме дали го е вкарало в базата данни  може да видим ObjectId
 АКО ВСИЧКО РАБОТИ КОМИТВАМ 'ADD RELATION FROM CUBE TO ACCESSORY'
 
+ТРИДЕСЕТ:
+ВЛИЗАМ ВЪВ ФАЙЛ details.hbs и изтривам всички вградени аксесоари без един
+след това над <div class="accessory">
+слагам {{#each}} след това слагам {{else}} преди това <h3 class="italic">This cube has no accessories yet...</h3>
+а след него затварям със {{/each}}
+
+след това на img src слагам вместо линка {{imageUrl}} alt="{{name}}"
+после на <h3>{{name}}</h3> и на <p>{{description}}</p>
+след това влизам във файл cubeManager.js и при 
+експорта за един тоест exports.getOne = (cubeId) => Cube.findById(cubeId) добавям .populate('accessories') накрая и става така:
+exports.getOne = (cubeId) => Cube.findById(cubeId).populate('accessories')
+но е най добре да имаме два метода със популиране и без популиране така че може да са по следния начин:
+exports.getOne = (cubeId) => Cube.findById(cubeId) // To take details of the cube 
+exports.getOneWithAccessories = (cubeId) => this.getOne(cubeId).populate('accessories')
+И след това влизам във cubeController и при router.get за детайлите го правя ето така:
+router.get('/:cubeId/attach-accessory', async (req, res) =>{
+    const cube = await cubeManager.getOneWithAccessories(req.params.cubeId).lean()
+
+    при details.hbs accessories трябва да бъде така:
+<h2>Accessories</h2>
+    <div class="accessories">
+  {{#each accessories}}
+    <div class="accessory">
+      <img src="{{imageUrl}}" alt="{{name}}">
+      <h3>{{name}}</h3>
+      <p>{{description}}</p>
+    </div>
+    {{else}}
+    <h3 class="italic">This cube has no accessories yet...</h3>
+    {{/each}}
+  </div>
+  {{/with}}
+</main>
+АКО ВСИЧКО РАБОТИ ПРАВИЛНО И АКСЕСОАРИТЕ СЕ ПОКАЗВАТ ПОД КУБА КОМИТВАМ "SHOW ATTACHED ACCESSORIES"
+
+
 req.query = за куери стринга това е всичко след ? във http и ако има фрагмент "=" преди фрагмента
 req.params = за параметрите
 req.body = за пост данните на формата които са изпратени и са парснати

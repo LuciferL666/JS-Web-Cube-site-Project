@@ -519,8 +519,38 @@ const hasAccessories = accessories.length > 0
 и в res.render след cube, accessories подаваме и hasAccessories
 след това във файл attach.hbs над form method и под src="{{cube.imageUrl}}"
 правим {{#if hasAccessories}} и под {{/form}} пишем {{else}} и след <h3 надписа за кубовете</h3> {{/if}}
-ако всичко е наред КОМИТВАМ "Show no accessory"
+ако всичко е наред КОМИТВАМ "Show no accessory title when there has non"
 
+
+ДВАДЕСЕТ И ДЕВЕТ:
+СВЪРЗВАНЕ НА АКЕСОАРА С КУБА
+ВЛИЗАМЕ ВЪВ file Cube.js във схемата където са името, описанието, картинката, трудността сега слагаме и 
+,accessory: [{
+        type: mongoose.Types.ObjectId,
+        ref: 'Accessory' // трябва да се направи със квадратни скоби за да бъде масив 
+}]
+след това влизаме във файл cubController.js
+и правим раутер за пост пот този за гет
+
+router.post('/:cubeId/attach-accessory', async (req, res) =>{
+    const { accessory: accessoryId } = req.body // по този начин го преименуваме от accessory на accessoryId със ':'
+const cubeId = req.params.cubeId;
+    await cubeManager.attachAccessory(cubeId, accessoryId) //слагаме преименуваното accessory
+})
+нямаме създаден такъв мениджър за това отиваме във файл cubeManager.js и под return cube.save(); };
+го създаваме ето така:
+
+exports.attachAccessory = async (cubeId, accessoryId) =>{
+ return Cube.findByIdAndUpdate(cubeId, { $push: { accessories: accessoryId } }); // first way 
+
+ };
+след това във файл cubeController.js под await cubeManager.attachAccessory
+добавяме res.redirect('/cubes/${cubeId}/details')
+
+най вероятно ще гръмне за това създаваме нов куб и след това гледаме в базата данни на новия куб дали се е появило нова опция за аксесоар
+ако да може ръчно през базата данни да добавим и на дугите кубове accessories
+след това добавяме аксесоар на куба и гледаме дали го е вкарало в базата данни  може да видим ObjectId
+АКО ВСИЧКО РАБОТИ КОМИТВАМ 'ADD RELATION FROM CUBE TO ACCESSORY'
 
 req.query = за куери стринга това е всичко след ? във http и ако има фрагмент "=" преди фрагмента
 req.params = за параметрите

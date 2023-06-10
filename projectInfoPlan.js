@@ -494,7 +494,7 @@ const accessoryManager = require('../managers/accessoryManager)
 
 след това под router.get('/:cubeId/attach-accessory', async (req, res) =>{
     const cube = await cubeManager.getOne(req.params.cubeId).lean()
-    пиша const accessories = await accessoryManager.get().lean()
+    пиша const accessories = await accessoryManager.getAll().lean()
 
     след това в accessoryManager между const Accessory и exports.create 
     пиша exports.getAll = () => Accessory.find()
@@ -567,7 +567,7 @@ exports.getOne = (cubeId) => Cube.findById(cubeId).populate('accessories')
 exports.getOne = (cubeId) => Cube.findById(cubeId) // To take details of the cube 
 exports.getOneWithAccessories = (cubeId) => this.getOne(cubeId).populate('accessories')
 И след това влизам във cubeController и при router.get за детайлите го правя ето така:
-router.get('/:cubeId/attach-accessory', async (req, res) =>{
+router.get('/:cubeId/details', async (req, res) =>{
     const cube = await cubeManager.getOneWithAccessories(req.params.cubeId).lean()
 
     при details.hbs accessories трябва да бъде така:
@@ -586,6 +586,23 @@ router.get('/:cubeId/attach-accessory', async (req, res) =>{
   {{/with}}
 </main>
 АКО ВСИЧКО РАБОТИ ПРАВИЛНО И АКСЕСОАРИТЕ СЕ ПОКАЗВАТ ПОД КУБА КОМИТВАМ "SHOW ATTACHED ACCESSORIES"
+
+ТРИДЕСЕТ И ЕДНО:
+ДА ВЗИМАМЕ АКСЕСОАРИ КОИТО НЕ ПРИНАДЛЕЖАТ НА ДАДЕНИЯ КУБ:
+ЗА ЦЕЛТА ВЛИЗАМЕ ВЪВ ФАЙЛ cubeControllers.js
+и при раутера за аксесоарите и атачването го променяме по този начин:
+router.get('/:cubeId/attach-accessory', async (req, res) =>{
+    const cube = await cubeManager.getOne(req.params.cubeId).lean()
+    const accessories = await accessoryManager.getOthers(cube.accessories).lean()
+
+    след това влизаме във файл accessoryManager.js и създаваме нов експорт най-отдолу ето така:
+    exports.getOthers = (accessoryIds) => Accessory.find({ _id: { $nin: accessoryIds } });
+
+и накрая във файл attach.hbs трябва да оправим бутона след като добавим аксесоар да ни връща на детайлите ето така 
+след  {{/if}} бутона го правим ето така:
+        <a class="btn" href="/cubes/{{cube._id}}/details">Back</a>
+
+АКО ВСИЧКО Е КАКТО ТРЯБВА И НЕ НИ ПОКАЗВА ОТНОВО АКСЕСОАРИТЕ КОИТО ИМАМЕ КОМИТВАМЕ "SHOW REMAINING ACCESSORIES ONLY"
 
 
 req.query = за куери стринга това е всичко след ? във http и ако има фрагмент "=" преди фрагмента

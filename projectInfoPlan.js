@@ -622,12 +622,73 @@ na login linka да бъде /users/login, register /users/register logout /user
     res.render('user/register')
  })
  module.exports = router;
+
 след това връзваме контролера във  routes.js
 под const accessoryController правим
 const userController = require('./controllers/userController')
 и под router.use ('/accessories')
 правим: router.use('/users', userController)
 АКО RIGISTER СЕ ОТВАРЯ БЕЗ ПРОБЛЕМ МОЖЕ ДА КОМИТВАМЕ "ADD REGISTER PAGE"
+
+ТРИДЕСЕТ И ТРИ: POST ЗАЯВКИ
+ВЛИЗАМЕ В userController.js и след затварящите скоби на router.get точно преди module.exports правим:
+router.post('/register', async (req, res)=>{
+const { username, password, repeatPassword } = req.body
+и може по желание да сложим console.log(req.body) за да видим дали дава правилните данни
+res.redirect('/users/login')
+})
+във register.hbs може да изтрием екшъна за да се визуализира на същата страница или 
+да му дадеме правилния път който е: "/users/register" и метода е POST
+
+след това стартираме пишем име и пароли натискаме регистер трябва да ни даде 404 защото нямаме логин страница, но трябва да
+имаме данните в конзолата ако сме ги получили всичко е наред И МОЖЕ ДА ПРОДЪЛЖИМ.
+
+ВЪВ ПАПКА MODELS ПРАВИМ МОДЕЛ НА ПОТРЕБИТЕЛЯ User.js
+и в него пишем:
+ const mongoose = require('mongoose');
+const userSchema = new mongoose.Schema({
+    username: String,
+    password: String,
+})
+const User = mongoose.model('User', userSchema)
+module.exports = User;
+
+след това в папка menagers създаваме файл userManager.js
+
+и във него пишем:
+const User = require('../models/User')
+exports.register = (userData) =>User.create(userData)
+
+за да валидираме паролата преди да я хешираме във папка models file User.js
+ в схемавта вместо да бъде password: String, го променяме ето така:
+ password:{
+    type: String,
+    // validate: {
+    //     validator: function(value){
+    //         return this.repeatPassword === value //това не работи но може да се остави
+    //     },
+    //     message: `Password missmatch!`
+    // }
+ },
+});
+ЗА ТОВА ПОД const userSchema username, password и тн под });
+пишем
+userSchema.virtual('repeatPassword')
+.set(function(value){
+    if(value !== this.password){
+        throw new mongoose.MongooseError('Password missmatch!)
+    }
+})
+
+ влизаме във userController.js
+под const router правим:
+const userManager = require('../manager/userManager') 
+а във router.post('/register) под const {username, password, repeatPassword}
+пишем: await userManager.register({ username, password, repeatPassword})
+
+след това опитваме да се регистрираме с различни пароли и трябва да крашне и в конзолата да видим Password missmatch!
+след това пробваме с еднаква пароли и ако ни прати на 404 значи всичко е наред проверяваме в базата данни дали се е запазило името и паролата
+АКО ДА КОМИТВАМ "SAVE USER WITH VALIDATED PASSWORD"
 
 
 req.query = за куери стринга това е всичко след ? във http и ако има фрагмент "=" преди фрагмента

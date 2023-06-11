@@ -690,6 +690,22 @@ const userManager = require('../manager/userManager')
 след това пробваме с еднаква пароли и ако ни прати на 404 значи всичко е наред проверяваме в базата данни дали се е запазило името и паролата
 АКО ДА КОМИТВАМ "SAVE USER WITH VALIDATED PASSWORD"
 
+ТРИДЕСЕТ И ЧЕТИРИ: ИЗПОЛЗВАНЕ НА БИБЛИОТЕКА bcrypt
+във папка models file User.js
+под const mongoose 
+правим:
+const bcrypt = require('bcrypt)
+след това под userSchema.virtual('repeatPassword')
+точно след '})' тези скоби
+пишем userSchema.save('save', async function(){
+const hash = await bcrypt.hash(this.password, 10)
+this.password = hash
+})
+пробваме дали ще се запази в базата данни с хешираната парола ако да и няма грешка
+КОМИТВАМ 'HASH PASSWORD BEFORE SAVE '
+
+
+
 
 req.query = за куери стринга това е всичко след ? във http и ако има фрагмент "=" преди фрагмента
 req.params = за параметрите

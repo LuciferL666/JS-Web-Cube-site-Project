@@ -604,6 +604,7 @@ router.get('/:cubeId/attach-accessory', async (req, res) =>{
 
 АКО ВСИЧКО Е КАКТО ТРЯБВА И НЕ НИ ПОКАЗВА ОТНОВО АКСЕСОАРИТЕ КОИТО ИМАМЕ КОМИТВАМЕ "SHOW REMAINING ACCESSORIES ONLY"
 
+___________________________________________________________________
 ТРИДЕСЕТ И ДВЕ: ЛОГИН РЕГИСТРАЦИЯ БИСКВИТКИ И ТОКЕНИ ЗА ПОТРЕБИТЕЛИ ДОБАВЯНЕ НА БИБЛИОТЕКИ
 НАЙ-НАПРЕД ИНСТАЛИРАМЕ БИБЛИОТЕКА npm i bcrypt
 прехвърляме новите ресурси css и images във папка public, а новите страници във views
@@ -720,6 +721,37 @@ router.get('/login', (req, res)=>{
 след като се регистрираме трябва да ни изпраща на логин страницата
 ако всичко се получава и няма грешка КОМИТВАМ "ADD LOGIN PAGE"
 
+ТРИДЕСЕТ И ШЕСТ:
+В ПАПКА CONTROLLERS FILE userController.js
+под раутер гет заявката правя раутер за пост заявка
+router.post('/login', async (req, res)=>{
+    const { username, password } = req.body;
+
+    const user = await userManager.login(usrename, password);
+    console.log(user) // само за да видим какво получаваме
+    res.redirect('/')
+})
+след това във userManager.js
+най отгоре трябва да сложим 
+const bcrypt = require('bcrypt') //за валидиране на паролата
+под exports.register
+prawq exports.login = async (username, password) => {
+    //TODO FIND USER
+const user = await User.findOne({ username });
+
+if(!user){
+throw new Error ('Cannot find username or password');
+}
+//TODO VALIDATE PASSWORD
+const isValid = await bcrypt.compare(password, user.password);
+if(!isValid){
+    throw new Error ('Cannot find username or password');
+}
+    //TODO USER
+    return user;
+}
+след това пробваме да се регистрираме после да се логне и ако всичко работи ни праща на главната страница
+и може да КОМИТВАМ "USER LOGIN"
 
 req.query = за куери стринга това е всичко след ? във http и ако има фрагмент "=" преди фрагмента
 req.params = за параметрите

@@ -604,6 +604,31 @@ router.get('/:cubeId/attach-accessory', async (req, res) =>{
 
 АКО ВСИЧКО Е КАКТО ТРЯБВА И НЕ НИ ПОКАЗВА ОТНОВО АКСЕСОАРИТЕ КОИТО ИМАМЕ КОМИТВАМЕ "SHOW REMAINING ACCESSORIES ONLY"
 
+ТРИДЕСЕТ И ДВЕ: ЛОГИН РЕГИСТРАЦИЯ БИСКВИТКИ И ТОКЕНИ ЗА ПОТРЕБИТЕЛИ ДОБАВЯНЕ НА БИБЛИОТЕКИ
+НАЙ-НАПРЕД ИНСТАЛИРАМЕ БИБЛИОТЕКА npm i bcrypt
+прехвърляме новите ресурси css и images във папка public, а новите страници във views
+след това във папка views създаваме нова папка users за логин и за регистер и директно вътре слагаме
+loginPage и registerPage И ТРЯБВА ДА ГИ ПРЕИМЕНУВАМЕ registerPage НА register.hbs login-после
+След това влизаме във файл registerPage и от нея взимаме Logout, Login, Register и ги прехвърляме във 
+папка layouts файл main.js и ги преподреждаме login register logout
+na login linka да бъде /users/login, register /users/register logout /users/logout
+правим ги с user за да го направим като контролер
+след това във registerPage трием всичко освен main часта
+след това в папка controllers правим файл userController.js
+ в него взимаме раутера:
+
+ const router = require('express').Router()
+ router.get('/register', (req, res)=>{
+    res.render('user/register')
+ })
+ module.exports = router;
+след това връзваме контролера във  routes.js
+под const accessoryController правим
+const userController = require('./controllers/userController')
+и под router.use ('/accessories')
+правим: router.use('/users', userController)
+АКО RIGISTER СЕ ОТВАРЯ БЕЗ ПРОБЛЕМ МОЖЕ ДА КОМИТВАМЕ "ADD REGISTER PAGE"
+
 
 req.query = за куери стринга това е всичко след ? във http и ако има фрагмент "=" преди фрагмента
 req.params = за параметрите

@@ -727,7 +727,7 @@ router.get('/login', (req, res)=>{
 router.post('/login', async (req, res)=>{
     const { username, password } = req.body;
 
-    const user = await userManager.login(usrename, password);
+    const user = await userManager.login(username, password);
     console.log(user) // само за да видим какво получаваме
     res.redirect('/')
 })
@@ -751,7 +751,111 @@ if(!isValid){
     return user;
 }
 след това пробваме да се регистрираме после да се логне и ако всичко работи ни праща на главната страница
-и може да КОМИТВАМ "USER LOGIN"
+и може да КОМИТВАМ "USER LOGIN" и трябва да пробваме дали ще гръмне с грешна парола
+
+ТРИДЕСЕТ И СЕДЕМ: ТРЯБВА ДА ОПРАВИМ СЪРВЪРА ДА РАЗБИРА, ЧЕ СМЕ СЕ ЛОГНАЛИ
+ЗА ТОВА ИЗПОЛЗВАМЕ БИБЛИОТЕКИ npm i cookie-parser 
+И npm i jsonwebtoken
+След това отивам в folder configurations file expressConfig.js
+под const path правя:
+const cookieParser = require('cookie-parser)
+и след това във function expressConfig(app)
+под app.use(express.urlencoded)
+правя app.use(cookieParser())
+след това в userController.js при router.post('/login')
+точно преди res.redirect('/') пиша:
+res.cookie('username', user.username)
+
+след това в папка src правя друга папка lib за библиотеки 
+в нея правя файл jsonwebtoken.js или просто jwt.js и в него пиша:
+const { promisify } = require('util')
+const jsonwebtoken = require('jsonwebtoken')
+const jwt = {
+    sign: util.promisify(jsonwebtoken.sign),
+    verify: promisify(jsonwebtoken.verify),
+};
+module.exports = jwt;
+
+след това влизам в userManager.js 
+и под const bcrypt пиша:
+const jwt = require('../lib/jwt')
+
+и след това пак във userManager
+под втория иф тоест под if(!isValid){
+
+} и точно преди return user 
+
+const payload = {
+    _id: user._id,
+    username: user.name
+}
+const token = await jwt.sign(payload, SECRET, { expiresIn: '2d'})
+
+
+ПОД const USER ТРЯБВА ДА НАПРАВИМ 
+const secret = "someveryverylongsecret" // по принцип трябва да бъде нещо дълго и сложно а не дума
+
+след това влизаме в userController.js и поправяме роутера за пост трябва да стане ето така
+router.post('/login', async (req, res) =>{
+    const {username, password } = req.body;
+    const token = await userManager.login(username, password);
+    res.cookie('auth', token {httpOnly: true });
+    res.redirect('/')
+})
+
+след това пробвам да се логна и с f12 поглеждам дали се появява auth - което е за name
+и токена което е - value
+след това влизам в jwt.io и проверявам този токен на какво е равно  
+
+ЗАДА МОЖЕ ДА ИМАМЕ ДОСТЪП ДО ТОКЕНА ВЪВ ВСЯКА СТРАНИЦА СИ ПРАВИМ MIDDLEWARE
+СЪЗДАВАМЕ ПАПКА В SRC ИМЕТО НА ПАПКА Е middlewares в тази папка правим файл authMiddleware.js
+const jwt = require('../lib/jwt');
+
+exports.auth = async (req, res, next) =>{
+    const token = req.cookies['auth'];
+    if(token){
+//validate token
+try {
+    const user = await jwt.verify(token, SECRET);
+
+    req.user = user
+
+     next (); // ако има токен и си логнат
+}catch(err){
+    res.clearCookie('auth'); // за изтриване на куки при съмнение,че е грешен или фалшив и го пращам на логин страницата за да се логне
+ res.redirect('/users/login');
+}
+    }else{
+        next(); // ако няма токен и си разлогнат
+    }
+
+};
+
+трябва да взема от файл userManager.js да изрежа const SECRET = 'someveryverylongsecret'
+и да го поставя във папка configurations правя файл config.js в него щего поставя ето така:
+export.SECRET = 'someveryverylongsecret'
+
+СЛЕД ТОВА ОБРАТНО ВЪВ userManager.js от където взехме const secret на негово място поставяме:
+const { SECRET } = require('../configurations/config')
+
+СЛЕД ТОВА ВЕЧЕ МОЖЕ ДА ВЛЕЗЕМ ОБРАТНО В authMiddleware.js и под const jwt пишем:
+const { SECRET } = require('../configurations/config')
+
+
+за да го използваме влизаме в expressConfig.js и го импортваме
+под const cookieParser правим:
+
+const { auth } = require('../middlewares/authMiddleware)
+
+и след това във function expressConfig(app)
+под app.use(cookieParser());
+правим app.use(auth)
+
+за да видим какво ще ни даде когато се логнем в cubeController.js  под
+router.get('/create')
+слагам console.log(req.user)
+ако получим данните правилно в конзолата може да КОМИТВАМ "ADD AUTH MIDDLEWARE"
+
 
 req.query = за куери стринга това е всичко след ? във http и ако има фрагмент "=" преди фрагмента
 req.params = за параметрите

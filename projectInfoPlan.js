@@ -875,6 +875,51 @@ owner: req.user._id,
 проверяваме с ф12 първо дали сме логнати и дали имаме токен след това поглеждаме в базата данни дали този куб има owner = равен на някакъв ObjectId
 ако всичко е така и няма грешки КОМИТВАМ "ADD CUBE OWNER" 
 
+ТРИДЕСЕТ И ДЕВЕТ:
+ПРАВЕНЕ НА ЕДИТ И ДЕЛЕТЕ ВЪВ КУБА
+ВЛИЗАМ ВЪВ ФАЙЛ details.hbs
+под бутона attach добавям още два бутона 
+ <a class="btn" href="/cubes/{{_id}}/edit">Edit</a>
+  <a class="btn" href="/cubes/{{_id}}/delete">Delete</a>
+
+  във папката views правим нова папка cube и в нея поставяме
+  deleteCubePage.html и editCubePage.html също така може да преместим 
+  details.hbs и create.hbs но трябва да променим пътищата им навсякъде
+  така, че отивам първо в cubeController и при router.get(/create)
+  променяме res.render('cube/create') ето така
+  след това при детайлите res.render('cube/details')
+
+  след това се връшаме във views папка cube и променяме deleteCubePage.html
+  на delete.hbs след това изтриваме всичко в нея освен мейн частта
+  махаме action method='POST'
+ПРЕДИ ДА ГО КОРИГИРАМЕ НАПЪЛНО МОЖЕ ДА ГО ВИДИМ:
+ВЛИЗАМЕ ВЪВ cubeController.js и най0 отдолу точно над module.exports= router;
+пишем router.get('/:cubeId/delete', (res, render)=>{
+    res.render('cube/delete');
+});
+след това влизаме във сайта натискаме на детайлите нашия куб и трябва да видим новите два бутона
+натискаме на бутона delete и трябва да видим нашата форма идеята на това да се вижда формата е за да покаже на потребителя какво ще изтрие
+
+след това се връщаме във cubeController.js и при router.get('/:cubeId/delete') добавяме му async pred req, res тоест това което направихме последно
+над res.render('cube/delete'); добавяме му , { cube }
+пишем: const cube = await cubeManager.getOne(req.params.cubeId).lean()
+трябва да изглежда така
+
+router.get('/:cubeId/delete', async (res, render)=>{
+    const cube = await cubeManager.getOne(req.params.cubeId).lean()
+    res.render('cube/delete', { cube });
+});
+
+след това влизаме във delete.hbs и почваме да променяме където е name
+велюто трябва да стане:
+value="{{cube.name}}"
+при description  преди </text> слагаме {{cube.description}}
+ под imageUrl
+ където е value="{{cube.imageUrl}}" 
+ останалото ще го променим след това първо тестваме дали работи правилно пак влизаме на детайлите на куба 
+ и натискаме делете и сега трябва да видим името на куба описанието и линка на снимката
+ АКО ВСИЧКО Е ТАКА И РАБОТИ ПРАВИЛНО КОМИТВАМ 'ADD DELETE CUBE PAGE'
+
 req.query = за куери стринга това е всичко след ? във http и ако има фрагмент "=" преди фрагмента
 req.params = за параметрите
 req.body = за пост данните на формата които са изпратени и са парснати

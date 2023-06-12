@@ -856,6 +856,24 @@ router.get('/create')
 слагам console.log(req.user)
 ако получим данните правилно в конзолата може да КОМИТВАМ "ADD AUTH MIDDLEWARE"
 
+ТРИДЕСЕТ И ОСЕМ:
+ДОБАВЯНЕ НА СОБСТВЕНИК НА КУБА:
+ВЛИЗАМЕ ВЪВ ФАЙЛ Cube.js
+и под ref: 'Accessory'
+}]
+пишем:
+owner: {
+    type: mongoose.Types.ObjectId,
+    ref: 'User'
+}
+след това в cubeController във await cubeManager.create
+точно под difficultyLevel: Number и преди })
+пишем:
+owner: req.user._id,
+
+след това създаваме един куб за да го тестваме може pyramid cube
+проверяваме с ф12 първо дали сме логнати и дали имаме токен след това поглеждаме в базата данни дали този куб има owner = равен на някакъв ObjectId
+ако всичко е така и няма грешки КОМИТВАМ "ADD CUBE OWNER" 
 
 req.query = за куери стринга това е всичко след ? във http и ако има фрагмент "=" преди фрагмента
 req.params = за параметрите

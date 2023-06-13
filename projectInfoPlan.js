@@ -968,6 +968,77 @@ exports.update = (cubeId, cubeData) => Cube.findByIdAndUpdate(cubeId, cubeData)
 СЛЕД ТОВА ОПИТВАМЕ ДА ЪПДЕЙТНЕМ НЯКОЙ КУБ АКО ВСИЧКО РАБОТИ ПРОВЕРЯВАМЕ ДАЛИ СЕ Е ЪПДЕЙТНАЛ И В БАЗАТА ДАННИ
 АКО ДА МОЖЕ ДА КОМИТВАМ "UPDATE CUBE"
 
+ЧЕТИРИДЕСЕТ И ДВЕ: ОПРАВЯНЕ НА ЛЕВЪЛА НА ТРУДНОСТТА 
+ЗА ЦЕЛТА ВЛИЗАМЕ ВЪВ edit.hbs и където са оптионите за difficultyLEVEL  НАД ОПЦИЯ 1
+ПРАВИМ ТАКА: 
+{{#each options}}
+<option value="{{value}}" {{#if selected}}selected{{/if}}>{{title}}</option> 
+{{/each}}
+след това влизам във cubeController.js точно преди router,get('/:cubeId/edit')
+пиша:
+function getDifficultyOptionsViewData(difficultyLevel){
+    const titles = [
+        'Very Easy',
+        'Easy',
+        'Medium (Standard 3x3)', //може да се копират от edit.hbs
+        'Intermediate',
+        'Expert',
+        'Hardcore',
+    ];
+    const options = titles.map((title, index) =>({
+        title: `${index + 1} - ${title}`,
+        value: index + 1,
+        selected: Number(difficultyLevel) === index + 1
+    }));
+    return options;
+}
+
+след това във router.get('/:cubeId/edit'
+точно под const cube = await cubeManager.getOne(req.params.cubeId).lean()
+пиша: const options = getDifficultyOptionsViewData(cube.difficultyLevel);
+ и това го правим така : res.render('cube/edit', { cube, options }) добавяме оптшъните към куба
+СЛЕД ТОВА ВЛИЗАМЕ В edit.hbs И ИЗТРИВАМЕ ОПЦИЙТЕ ИЗВЪН EACH ТЕЗИ КОИТО СА БИЛИ ХАДКОРДНАТИ
+
+СЛЕД ТОВА ПРАВИМ В SRC НОВА ПАПКА utils и в нея правим файл viewHelpers.js
+и от cubeControllers.js изрязваме тази функция :
+function getDifficultyOptionsViewData(difficultyLevel){
+    const titles = [
+        'Very Easy',
+        'Easy',
+        'Medium (Standard 3x3)', //може да се копират от edit.hbs
+        'Intermediate',
+        'Expert',
+        'Hardcore',
+    ];
+    const options = titles.map((title, index) =>({
+        title: `${index + 1} - ${title}`,
+        value: index + 1,
+        selected: Number(difficultyLevel) === index + 1
+    }));
+    return options;
+}
+и я поставяме във viewHelpers.js като променяме function getDifficultyOptionsViewData
+на exports.getDifficultyOptionsViewData = function (difficultyLevel)
+
+А ВЪВ cubeController.js под const accessoryManager
+пишем:
+const {getDifficultyOptionsViewData} = require('../utils/viewHelpers')
+
+и след това променяме и router.get('/:cubeId/delete')
+по този начин:
+router.get('/:cubeId/delete', async (res, render)=>{
+    const cube = await cubeManager.getOne(req.params.cubeId).lean()
+    const options = getDifficultyOptionsViewData(cube.difficultyLevel);
+    res.render('cube/delete', { cube, options });
+});
+
+след това правя коепие на това :
+{{#each options}}
+<option value="{{value}}" {{#if selected}}selected{{/if}}>{{title}}</option> 
+{{/each}}
+го поставям и във delete.hbs намястото на опцийте точно под <select id="difficulty"
+АКО ВСИЧКО Е НАРЕД КОМИТВАМ 'ADD GENERATE OPTIONS FOR DIFFICULTY LEVEL'
+
 req.query = за куери стринга това е всичко след ? във http и ако има фрагмент "=" преди фрагмента
 req.params = за параметрите
 req.body = за пост данните на формата които са изпратени и са парснати

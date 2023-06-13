@@ -1059,6 +1059,88 @@ router.get('/:cubeId/details', async (req, res)=>{
 след това  {{#each cube.accessories}}
 АКО ВСИЧКО РАБОТИ И ВИЖДАМЕ БУТОНИТЕ КОМИТВАМ 'SHOW BUTTONS CONDITIONALLY'
 
+
+ЧЕТИРИДЕСЕТ И ЧЕТИРИ: CONDITIONAL NAVIGATION
+ВЛИЗАМЕ ВЪВ MAIN.HBS НАД class="logo" пишем
+logo
+browse
+About
+{{#if isAuthenticated}}
+ADD CUBE
+ADD ACCESSORY
+Logout
+<li>{{user.username}}</li>
+{{else}}
+Login
+Register
+{{/if}}
+
+след това слагаме logo nad if всичко както е в схемата по горе
+
+след това влизаме в authMiddleware
+и във if (token) го правим ето 
+така:
+    if(token){
+
+try {
+    const user = await jwt.verify(token, SECRET);
+
+    req.user = user
+    res.locals.user = user
+    res.locals.isAuthenticated = true
+
+     next ();
+
+     АКО СМЕ ЛОГНАТИ И НЯМА ГРЕШКИ ЗНАЧИ МОЖЕ ДА КОМИТВАМ "VALID LOGED USER"
+
+ЧЕТИРИДЕСЕТ И ПЕТ: LOGOUT
+ВЛИЗАМЕ ВЪВ ФАЙЛ userController.js и точно над module.exports = router
+пишем:
+router.get('/logout', (req, res) =>{
+    res.clearCookie('auth');
+    res.redirect('/')
+})
+
+ИЗПРОБВАМЕ ЛОГОУТА ЛОГВАМЕ СЕ С ДРУГ ПОТРЕБИТЕЛ И ПОГЛЕЖДАМЕ ДАЛИ ВИЖДАМЕ БУТОНИТЕ ЗА ЕДИТ И ДЕЛЕТЕ АКО НЕ И НЯМА ГРЕШКИ
+КОМИТВАМ "ADD LOGOUT OPTION"
+
+ЧЕТИРИДЕСЕТ И ШЕСТ: ROUTE GUARDS
+ВЛИЗАМЕ В authMiddleware.js
+
+И НАЙ-ОТДОЛУ ПИШЕМ:
+exports.isAuth или isAuthenticated = (req, res, next) =>{
+    if(!req.user){
+        return res.redirect('/user/login')
+    }
+    next();
+}
+
+СЛЕД ТОВА ВЛИЗАМЕ ВЪВ cubeController.js
+и най -отгоре под const router
+пишем:
+const { isAuth } = require('../middlewares/authMiddleware')
+
+И СЛЕД ТОВА МНОГО ВАЖНО!! СЛАГАМЕ isAuth във
+router.get('/create', isAuth,
+router.post('/create', isAuth,
+router.get('/:cubeId/attach-accessory', isAuth,
+router.post('/:cubeId/attach-accessory', isAuth,
+router.get('/:cubeId/delete', isAuth,
+router.post('/:cubeId/delete', isAuth,
+router.get('/:cubeId/edit', isAuth,
+router.post('/:cubeId/edit', isAuth,
+
+АКО ВСИЧКО РАБОТИ КОМИТВАМ
+
+ПО ИЗБОР НАВСЯКЪДЕ ДА СЕ НАПРАВИ ПРОВЕРКА ДАЛИ ПОТРЕБИТЕЛЯТ Е ВЛЯЗАЛ АКО НЕ ДА ХВЪРЛЯ ГРЕШКА
+router.get('/:cubeId/edit', isAuth,
+под  const cube
+if(cube.owner.toString() !== req.user._id){
+    return res.redirect('/404')
+}
+
+
+
 req.query = за куери стринга това е всичко след ? във http и ако има фрагмент "=" преди фрагмента
 req.params = за параметрите
 req.body = за пост данните на формата които са изпратени и са парснати

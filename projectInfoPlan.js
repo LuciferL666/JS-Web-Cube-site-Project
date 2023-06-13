@@ -934,6 +934,40 @@ exports.delete = (cubeId) => Cube.findByIdAndDelete(cubeId)
 СЛЕД ТОВА ПРАВЯ НЯКАКЪВ DUMMY КУБ СЛЕД ТОВА ГО ИЗТРИВАМ И АКО МЕ ВЪРНЕ НА ГЛАВНАТА СТРАНИЦА И СЕ Е ИЗТРИЛ
 ЗНАЧИ ВСИЧКО РАБОТИ И МОЖЕ ДА КОМИТВАМ "WORKING DELETE BUTTON"
 
+ЧЕТИРИДЕСЕТ И ЕДНО: ЕДИТ БУТОН
+ВЛИЗАМЕ ВЪВ ФАЙЛ cubeController.js и преди module.exports най отдолу
+пишем:
+router.get('/:cubeId/edit', (req, res)=>{
+    res.render('cube/edit')
+})
+след това във папка views file editCubePage.html го преименуваме на edit.hbs
+и изтриваме всичко без майн часта махаме action защото ще постваме на същата страница
+СЛЕД ТОВА ТЕСТВАМЕ В САЙТА ВЛИЗАМЕ НА ЕДИТ СЛЕД ТОВА ПРЕОБРАЗУВАМЕ РАУТЕРА ЗА ЕДИТ ПО ТОЗИ НАЧИН
+В cubeController.js
+router.get('/:cubeId/edit', (req, res)=>{
+const cube = await cubeManager.getOne(req.params.cubeId).lean()
+
+    res.render('cube/edit', { cube })
+})
+след това във edit.hbs
+при name правим value="{{cube.name}}"
+ във description точно преди </textarea> пишем {{cube.description}}
+ после при imageUrl пишем value="{{cube.imageUrl}}"
+ ПРОВЕРЯВАМЕ В САЙТА ДА ЛИ ПОЛУЧАВАМЕ ДАННИТЕ НА КУБА
+ СЛЕД ТОВА ВЪВ ФАЙЛ cubeController.js под }); и преди module.exports
+ router.post('/:cubeId/edit', async(req, res)=>{
+    const cubeData =  req.body //взимаме куб дата от req.body може да променим конста и да сложим вместо cubeData да сложим {name, description, imageUrl, difficultyLevel}
+
+    await cubeManager.update(req.params.cubeId, cubeData);
+    res.redirect(`/cubes/${req.params.cubeId}/details`)
+ })
+след това във файл cubeManager точно преди exports.delete
+ПИШЕМ:
+exports.update = (cubeId, cubeData) => Cube.findByIdAndUpdate(cubeId, cubeData)
+
+СЛЕД ТОВА ОПИТВАМЕ ДА ЪПДЕЙТНЕМ НЯКОЙ КУБ АКО ВСИЧКО РАБОТИ ПРОВЕРЯВАМЕ ДАЛИ СЕ Е ЪПДЕЙТНАЛ И В БАЗАТА ДАННИ
+АКО ДА МОЖЕ ДА КОМИТВАМ "UPDATE CUBE"
+
 req.query = за куери стринга това е всичко след ? във http и ако има фрагмент "=" преди фрагмента
 req.params = за параметрите
 req.body = за пост данните на формата които са изпратени и са парснати

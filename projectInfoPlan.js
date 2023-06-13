@@ -612,7 +612,8 @@ ___________________________________________________________________
 loginPage и registerPage И ТРЯБВА ДА ГИ ПРЕИМЕНУВАМЕ registerPage НА register.hbs login-после
 След това влизаме във файл registerPage и от нея взимаме Logout, Login, Register и ги прехвърляме във 
 папка layouts файл main.js и ги преподреждаме login register logout
-na login linka да бъде /users/login, register /users/register logout /users/logout
+НАВСЯКЪДЕ ТРЯБВА ДА БЪДЕ USER
+na login linka да бъде /user/login, register /user/register logout /user/logout
 правим ги с user за да го направим като контролер
 след това във registerPage трием всичко освен main часта
 след това в папка controllers правим файл userController.js
@@ -628,7 +629,7 @@ na login linka да бъде /users/login, register /users/register logout /user
 под const accessoryController правим
 const userController = require('./controllers/userController')
 и под router.use ('/accessories')
-правим: router.use('/users', userController)
+правим: router.use('/user', userController)
 АКО RIGISTER СЕ ОТВАРЯ БЕЗ ПРОБЛЕМ МОЖЕ ДА КОМИТВАМЕ "ADD REGISTER PAGE"
 
 ТРИДЕСЕТ И ТРИ: POST ЗАЯВКИ

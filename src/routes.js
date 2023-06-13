@@ -2,7 +2,8 @@ const router = require('express').Router();
 
 const homeController = require('./controllers/homeController'); //Router
 const cubeController = require('./controllers/cubeController'); // Create page   with F12 I can go directly to the file 
-const accessoryController = require('./controllers/accessoryController')
+const accessoryController = require('./controllers/accessoryController');
+const userController = require('./controllers/userController');
 //Router
 //app.get('/', homeController.getHome); // Not very good way 
 router.use(homeController);
@@ -12,6 +13,9 @@ router.use('/cubes', cubeController);
 
 //create accessory
 router.use('/accessories', accessoryController)
+
+//user
+router.use('/user', userController)
 
 //For page 404
 router.get('*', (req, res) =>{

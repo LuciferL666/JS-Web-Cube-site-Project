@@ -920,7 +920,26 @@ value="{{cube.name}}"
  и натискаме делете и сега трябва да видим името на куба описанието и линка на снимката
  АКО ВСИЧКО Е ТАКА И РАБОТИ ПРАВИЛНО КОМИТВАМ 'ADD DELETE CUBE PAGE'
 
+ЧЕТИРИДЕСЕТ: ДА РАБОТИ ДЕЛЕТЕ БУТОНА
+В cubeController.js точно преди module.exports най-отдоло
+пишем
+router.post('/:cubeId/delete', async (req, res)=>{
+    await cubeManager.delete(req.params.cubeId);
+    res.redirect('/')
+})
+
+СЛЕД ТОВА ВЪВ ФАЙЛ cubeManager.js точно преди exports.attachAccessory
+пишем:
+exports.delete = (cubeId) => Cube.findByIdAndDelete(cubeId)
+СЛЕД ТОВА ПРАВЯ НЯКАКЪВ DUMMY КУБ СЛЕД ТОВА ГО ИЗТРИВАМ И АКО МЕ ВЪРНЕ НА ГЛАВНАТА СТРАНИЦА И СЕ Е ИЗТРИЛ
+ЗНАЧИ ВСИЧКО РАБОТИ И МОЖЕ ДА КОМИТВАМ "WORKING DELETE BUTTON"
+
 req.query = за куери стринга това е всичко след ? във http и ако има фрагмент "=" преди фрагмента
 req.params = за параметрите
 req.body = за пост данните на формата които са изпратени и са парснати
+
+
+
+ctrl + shift + o търси по синволи важно 
+ctrl + p търси файлове важно
 */

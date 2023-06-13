@@ -637,7 +637,7 @@ const userController = require('./controllers/userController')
 router.post('/register', async (req, res)=>{
 const { username, password, repeatPassword } = req.body
 и може по желание да сложим console.log(req.body) за да видим дали дава правилните данни
-res.redirect('/users/login')
+res.redirect('/user/login')
 })
 във register.hbs може да изтрием екшъна за да се визуализира на същата страница или 
 да му дадеме правилния път който е: "/users/register" и метода е POST
@@ -690,7 +690,7 @@ const userManager = require('../manager/userManager')
 
 след това опитваме да се регистрираме с различни пароли и трябва да крашне и в конзолата да видим Password missmatch!
 след това пробваме с еднаква пароли и ако ни прати на 404 значи всичко е наред проверяваме в базата данни дали се е запазило името и паролата
-АКО ДА КОМИТВАМ "SAVE USER WITH VALIDATED PASSWORD"
+АКО ДА КОМИТВАМ "SAVE USER WITH PASSWORD VALIDATION"
 
 ТРИДЕСЕТ И ЧЕТИРИ: ИЗПОЛЗВАНЕ НА БИБЛИОТЕКА bcrypt
 във папка models file User.js

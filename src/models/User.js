@@ -1,0 +1,24 @@
+const mongoose = require('mongoose')
+
+const userSchema =  new mongoose.Schema({
+    username: String,
+    password:{
+        type: String,
+        // validate: {
+        //     validator: function(value){
+        //         return this.repeatPassword === value //това не работи но може да се остави
+        //     },
+        //     message: `Password missmatch!`
+        // }
+     },
+    });
+userSchema.virtual('repeatPassword')
+.set(function(value){
+    if(value !== this.password){
+        throw new mongoose.MongooseError('Password missmatch!')
+    }
+})
+
+const User = mongoose.model('User', userSchema) 
+
+module.exports = User;

@@ -1039,6 +1039,26 @@ router.get('/:cubeId/delete', async (res, render)=>{
 го поставям и във delete.hbs намястото на опцийте точно под <select id="difficulty"
 АКО ВСИЧКО Е НАРЕД КОМИТВАМ 'ADD GENERATE OPTIONS FOR DIFFICULTY LEVEL'
 
+ЧЕТИРИДЕСЕТ И ТРИ: СЪЗДАВАНЕ НА СОБСТВЕНИК НА КУБА
+ВЛИЗАМЕ ВЪВ cubeController.js
+и при router.get('/:cubeId/details) го правим 
+така:
+router.get('/:cubeId/details', async (req, res)=>{
+        const cube = await cubeManager.getOneWithAccessories(req.params.cubeId).lean();
+        if(!cube){
+            return res.redirect('/404');
+        }
+        cons isOwner = cube.owner?.toString() === req.user._Id
+        res.render('cube/details', { cube, isOwner })
+})
+
+СЛЕД ТОВА ВЛИЗАМЕ В details.hbs и над бутоните едит и делете
+пишем:
+{{#if isOwner}} а след бутоните слагаме {{/if}} и махаме {{#with cube}} и {{/with}}
+и след това слагаме пред name imageUrl, description, difficultyLevel слагаме cube.
+след това  {{#each cube.accessories}}
+АКО ВСИЧКО РАБОТИ И ВИЖДАМЕ БУТОНИТЕ КОМИТВАМ 'SHOW BUTTONS CONDITIONALLY'
+
 req.query = за куери стринга това е всичко след ? във http и ако има фрагмент "=" преди фрагмента
 req.params = за параметрите
 req.body = за пост данните на формата които са изпратени и са парснати

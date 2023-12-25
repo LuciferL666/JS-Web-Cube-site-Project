@@ -1,2 +1,2 @@
-# JS-Web-Cube-site-Project1
+# JS-Web-Cube-site-Project
 Course Project Workshop
